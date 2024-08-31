@@ -1,0 +1,28 @@
+[project]
+name = "litesched"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "PokkaKiyo", email = "e0030925@u.nus.edu" }
+]
+dependencies = [
+    "apscheduler>=3.10.4",
+    "litestar[standard,jwt]>=2.11.0",
+    "pydantic-settings>=2.4.0",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/litesched"]
