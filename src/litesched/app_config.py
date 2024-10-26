@@ -14,56 +14,57 @@ from litesched.config import APP_NAME, SETTINGS, TEMPLATES_DIR
 
 def get_compression_config(
     *,
-    enabled: bool = SETTINGS.ENABLE_HTML_RESPONSE_COMPRESSION,
+    is_enabled: bool = SETTINGS.ENABLE_HTML_RESPONSE_COMPRESSION,
 ) -> CompressionConfig | None:
-    if not enabled:
+    if not is_enabled:
         return None
     return CompressionConfig(backend="gzip")
 
 
 def get_cors_config(
     *,
-    enabled: bool = SETTINGS.ENABLE_CORS,
+    is_enabled: bool = SETTINGS.ENABLE_CORS,
 ) -> CORSConfig | None:
-    if not enabled:
+    if not is_enabled:
         return None
     return CORSConfig()
 
 
 def get_csrf_config(
     *,
-    enabled: bool = SETTINGS.ENABLE_CSRF,
+    is_enabled: bool = SETTINGS.ENABLE_CSRF,
+    secret_key: str = SETTINGS.SECRET_KEY,
 ) -> CSRFConfig | None:
-    if not enabled:
+    if not is_enabled:
         return None
-    raise NotImplementedError("csrf config is not implemented yet")
+    return CSRFConfig(secret=secret_key)
 
 
 def get_debug_config(
     *,
-    enabled: bool = SETTINGS.ENABLE_LITESTAR_DEBUG_MODE,
+    is_enabled: bool = SETTINGS.ENABLE_LITESTAR_DEBUG_MODE,
 ) -> bool:
-    return enabled
+    return is_enabled
 
 
 def get_openapi_config(
     *,
-    enabled: bool = SETTINGS.ENABLE_OPENAPI_SCHEMA,
+    is_enabled: bool = SETTINGS.ENABLE_OPENAPI_SCHEMA,
     title: str = APP_NAME,
     version: str = metadata.version(APP_NAME),
     path: str = SETTINGS.OPENAPI_SCHEMA_PATH,
 ) -> OpenAPIConfig | None:
-    if not enabled:
+    if not is_enabled:
         return None
     return OpenAPIConfig(title=title, version=version, path=path)
 
 
 def get_template_config(
     *,
-    enabled: bool = SETTINGS.ENABLE_TEMPLATE_RESPONSES,
+    is_enabled: bool = SETTINGS.ENABLE_TEMPLATE_RESPONSES,
     directory: Path = TEMPLATES_DIR,
 ) -> TemplateConfig | None:
-    if not enabled:
+    if not is_enabled:
         return None
     return TemplateConfig(directory=directory, engine=JinjaTemplateEngine)
 

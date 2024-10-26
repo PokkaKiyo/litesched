@@ -1,5 +1,8 @@
+import binascii
+import os
 from pathlib import Path
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 APP_DIR = Path(__file__).resolve().parent
@@ -17,6 +20,9 @@ class Settings(BaseSettings):
     ENABLE_HTML_RESPONSE_COMPRESSION: bool = True
     ENABLE_CORS: bool = True
     ENABLE_CSRF: bool = True
+    SECRET_KEY: str = Field(
+        default_factory=lambda: binascii.hexlify(os.urandom(32)).decode(encoding="utf-8")
+    )
     ENABLE_TEMPLATE_RESPONSES: bool = False
     ENABLE_OPENAPI_SCHEMA: bool = False
     OPENAPI_SCHEMA_PATH: str = "/docs"
