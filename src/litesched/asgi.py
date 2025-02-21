@@ -95,6 +95,31 @@ async def admin_command_listener(
 
 async def tick() -> None:
     print("tick: " + datetime.now().strftime(r"%Y-%m-%dT%H:%M:%S%z"))
+    background_tasks: set[asyncio.Future] = set()
+    try:
+        tasks = []
+        for i in range(5, 11):
+            task = asyncio.create_task(worker(name=str(i), duration=i))
+            background_tasks.add(task)
+            tasks.append(task)
+            task.add_done_callback(background_tasks.discard)
+        await asyncio.gather(*tasks, return_exceptions=True)
+    except asyncio.CancelledError:
+        for background_task in background_tasks:
+            background_task.cancel()
+        with contextlib.suppress(asyncio.TimeoutError):
+            async with asyncio.timeout(10):
+                asyncio.gather(*background_tasks, return_exceptions=True)
+        raise
+
+
+async def worker(name: str, duration: float) -> None:
+    try:
+        print(f"{name}: Sleeping...")
+        await asyncio.sleep(duration)
+    except asyncio.CancelledError:
+        print(f"{name}: Cancelling... ")
+        raise
 
 
 async def start_admin_listener_tcp_socket(
