@@ -2,27 +2,20 @@
 name = "litesched"
 version = "0.1.0"
 description = "Add your description here"
-authors = [
-    { name = "PokkaKiyo", email = "e0030925@u.nus.edu" }
-]
-dependencies = [
-    "apscheduler>=3.10.4",
-    "litestar[standard,jwt]>=2.11.0",
-    "pydantic-settings>=2.4.0",
-]
 readme = "README.md"
-requires-python = ">= 3.8"
+authors = [
+    { name = "PokkaKiyo", email = "31039465+PokkaKiyo@users.noreply.github.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "apscheduler>=3.11.0",
+    "litestar[standard]>=2.14.0",
+    "pydantic-settings>=2.8.0",
+]
+
+[project.scripts]
+litesched = "litesched:main"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
-
-[tool.rye]
-managed = true
-dev-dependencies = []
-
-[tool.hatch.metadata]
-allow-direct-references = true
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/litesched"]
